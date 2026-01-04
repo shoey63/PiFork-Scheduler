@@ -53,6 +53,34 @@ This allows you to trigger updates manually from a terminal environment.
 
 ---
 
+## 🛠️ Termux Setup
+
+To ensure `update_pifork.sh` runs correctly, you need to set up a few basic packages in Termux.
+
+**1. Update Termux**
+Open Termux and ensure your packages are up to date:
+```bash
+pkg update && pkg upgrade
+```
+
+**2. Install Prerequisites**
+Install `git` and the GitHub CLI (`gh`), which are often required for fetching updates:
+```bash
+pkg install git gh
+```
+
+**3. Authenticate GitHub (One-Time Setup)**
+To allow the script to access repositories, link Termux to your GitHub account:
+```bash
+gh auth login
+```
+* Select **GitHub.com**
+* Protocol: **HTTPS**
+* Authenticate: **Login with a web browser** (Recommended for mobile)
+* Copy the 8-digit code shown in Termux, paste it into the browser window that opens, and authorize.
+
+---
+
 ## ⚠️ Security Disclaimer
 
 **Please Read Carefully:**
