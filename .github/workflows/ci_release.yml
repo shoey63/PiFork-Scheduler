@@ -1,0 +1,82 @@
+# .github/workflows/main.yml
+name: Android CI
+
+run-name: >-
+  ${{ inputs.create_release == 'true' && '🚀 Release' || format('🛠️ {0}', github.ref_name) }} 
+  ${{ github.event.head_commit.message != null && format('— {0}', github.event.head_commit.message) || format('by @{0}', github.actor) }}
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: "Create a GitHub Release with ZIP asset?"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+          
+jobs:
+  build:
+    name: Build & Package Module
+    runs-on: macos-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Extract version from module.prop
+        run: |
+          VERSION=$(grep '^version=' module.prop | cut -d'=' -f2)
+          VERSION_CODE=$(grep '^versionCode=' module.prop | cut -d'=' -f2)
+          echo "MODULE_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "MODULE_VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+
+      # CI artifact
+      - name: Upload CI artifact (clean module)
+        uses: actions/upload-artifact@v4
+        with:
+          name: PiFork-Scheduler_CI_${{ github.run_number }}
+          path: |
+            *
+            !.git
+            !.github
+            !README.md
+            !*.zip
+            !.gitignore
+
+      # Only when publishing an official release → create a clearly named ZIP
+      - name: Create official release ZIP
+        if: ${{ inputs.create_release == 'true' }}
+        run: |
+          zip -r PiFork-Scheduler-${{ env.MODULE_VERSION }}-release.zip \
+            module.prop service.sh customize.sh action.sh update_pifork.sh wrapper.sh META-INF/** \
+            -x "*.git*" ".github/*" "README.md" ".gitignore" "*.zip"
+
+      # Publish the release with the -release suffix
+      - name: Create GitHub Release
+        if: ${{ inputs.create_release == 'true' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.MODULE_VERSION }}
+          name: "PiFork-Scheduler ${{ env.MODULE_VERSION }}"
+          body: |
+            ## PiFork-Scheduler ${{ env.MODULE_VERSION }}
+
+            ### Module Info
+            - **ID:** pifork-scheduler  
+            - **Version:** ${{ env.MODULE_VERSION }}
+            - **Version Code:** ${{ env.MODULE_VERSION_CODE }}
+            - **Author:** shoey63
+            
+            *Built automatically by GitHub Actions.*
+          files: PiFork-Scheduler-${{ env.MODULE_VERSION }}-release.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
