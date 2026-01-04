@@ -1,0 +1,6 @@
+id=pifork-scheduler
+name=PiFork Scheduler
+version=v0.2.2
+versionCode=202
+author=Shoey63
+description=Downloads and updates latest PiFork CI build plus updates fingerprint daily. Use Action Button to pause/reload schedule. Requires Termux and a GitHub account (free).

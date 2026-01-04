@@ -1,0 +1,26 @@
+# =========================================================
+# PIFork Scheduler Configuration
+# =========================================================
+# Syntax: min hour day month day_of_week command
+# * = all, 0 = Sunday, 1-6 = Mon-Sat
+# ---------------------------------------------------------
+
+# --- OPTION 1: STANDARD (Active) ---
+# Runs the full update (Download + Install + Match) every day at 4:00 AM.
+0 4 * * * /system/bin/sh /data/adb/modules/pifork-scheduler/wrapper.sh
+
+# --- OPTION 2: HYBRID (Weekly Download / Daily Refresh) ---
+# To use this, add a # to Option 1 above, and remove the # from
+# the 2 lines below beginning with # 0 4
+
+# A. SUNDAY ONLY (0): Full Update via Wrapper
+#0 4 * * 0 /system/bin/sh /data/adb/modules/pifork-scheduler/wrapper.sh
+
+# B. MON-SAT (1-6): Local Refresh (Runs any installed autopif*.sh with -m)
+#0 4 * * 1-6 cd /data/adb/modules/playintegrityfix && for f in autopif*.sh; do /system/bin/sh "$f" -m; break; done
+
+# ---------------------------------------------------------
+# USEFUL COMMANDS (Run these in Terminal)
+# ---------------------------------------------------------
+# Force Update Now:
+# su -c sh /data/adb/modules/pifork-scheduler/wrapper.sh
