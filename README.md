@@ -92,6 +92,13 @@ The included helper script (`update_pifork.sh`) is designed to download and exec
 
 ---
 
+## 🤝 Credits
+
+* **osm0sis** - For the foundational work on [PlayIntegrityFork](https://github.com/osm0sis/PlayIntegrityFork).
+  * *Fix Play Integrity <A13 verdicts, allowing custom fields and props.*
+
+---
+
 ## 📜 License
 
 This project is open source. Feel free to fork, modify, and distribute.
