@@ -102,3 +102,16 @@ The included helper script (`update_pifork.sh`) is designed to download and exec
 ## 📜 License
 
 This project is open source. Feel free to fork, modify, and distribute.
+---
+
+## 📝 Changelog
+
+### v1.0.0
+
+Bump pre-release 0.2.3 to release 1.0.0
+
+---
+
+### v0.2.3
+
+Initial pre-release 
