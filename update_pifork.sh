@@ -70,17 +70,15 @@ su -c "
     # 2. Clean up junk
     rm -f \"$MODULE_PATH/skip_mount\" \"$MODULE_PATH/disable\"
 
-    # --- Run autopif with -m ---
-    # Find the script again inside the installed path
-    AUTOPIF_SCRIPT=\$(find \"$MODULE_PATH\" -maxdepth 1 -name \"autopif*.sh\" | sort -r | head -n 1)
-    
-    if [ -f \"\$AUTOPIF_SCRIPT\" ]; then
-        echo \"🏃 Running: \$(basename \"\$AUTOPIF_SCRIPT\") -m\"
-        cd \"$MODULE_PATH\"
-        # Note: 'sh' can run 644 scripts, but we made it 755 above anyway.
-        sh \"\$AUTOPIF_SCRIPT\" -m
+    # --- Run latest autopif with -m ---
+    AUTOPIF_SCRIPT=$(ls -t "$MODULE_PATH"/autopif*.sh 2>/dev/null | head -n 1)
+
+    if [ -n "$AUTOPIF_SCRIPT" ] && [ -f "$AUTOPIF_SCRIPT" ]; then
+        echo "🏃 Running: $(basename "$AUTOPIF_SCRIPT") -m"
+        cd "$MODULE_PATH" || exit 1
+        /system/bin/sh "$AUTOPIF_SCRIPT" -m
     else
-        echo \"❌ Error: autopif script not found.\"
+        echo "❌ Error: autopif script not found."
     fi
 "
 
