@@ -106,6 +106,15 @@ This project is open source. Feel free to fork, modify, and distribute.
 
 ## 📝 Changelog
 
+### v1.0.5
+
+- Fix: cron execution now resolves latest autopif script at runtime
+- Fix: conditional cleanup prevents version conflicts
+- Fix: permission repair is now idempotent and non-destructive
+- Fix: don't use find -printf (not supported by toybox)
+Use ls -t to sort autopif by latest
+- Fix: Rework permissions fix
+
 ### v1.0.0
 
 Bump pre-release 0.2.3 to release 1.0.0
