@@ -11,13 +11,13 @@
 
 # --- OPTION 2: HYBRID (Weekly Download / Daily Refresh) ---
 # To use this, add a # to Option 1 above, and remove the # from
-# the 2 lines below beginning with # 0 4
+# the 2 lines below beginning with #0 4
 
 # A. SUNDAY ONLY (0): Full Update via Wrapper
 #0 4 * * 0 /system/bin/sh /data/adb/modules/pifork-scheduler/wrapper.sh
 
 # B. MON-SAT (1-6): Local Refresh (Runs any installed autopif*.sh with -m)
-#0 4 * * 1-6 cd /data/adb/modules/playintegrityfix && for f in autopif*.sh; do /system/bin/sh "$f" -m; break; done
+#0 4 * * 1-6 cd /data/adb/modules/playintegrityfix || exit; f=$(ls -t autopif*.sh 2>/dev/null | head -n 1); [ -n "$f" ] && /system/bin/sh "$f" -m
 
 # ---------------------------------------------------------
 # USEFUL COMMANDS (Run these in Terminal)
