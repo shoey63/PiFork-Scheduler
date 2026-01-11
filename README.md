@@ -112,6 +112,11 @@ This project is open source. Feel free to fork, modify, and distribute.
 
 ## 📝 Changelog
 
+### v1.0.7
+
+- Enhancement: silence autopif 'bad date' warning as it automatically switches to busybox anyway if date is incompatible.
+- Information: Update Readme Security Disclaimer and add Supply Chain information.
+
 ### v1.0.5
 
 - Fix: cron execution now resolves latest autopif script at runtime
