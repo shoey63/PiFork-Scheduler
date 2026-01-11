@@ -81,14 +81,20 @@ gh auth login
 
 ---
 
-## ⚠️ Security Disclaimer
+## ⚠️ Security Disclaimer & Supply Chain
 
 **Please Read Carefully:**
 
-The included helper script (`update_pifork.sh`) is designed to download and execute code from remote sources to update your Play Integrity fingerprints.
+The included helper script (`update_pifork.sh`) is designed to download and execute code from a remote source to automatically update your Play Integrity fingerprints.
 
-* **Remote Code Execution:** This script may use `curl | sh` or similar methods to fetch the latest fixes.
-* **User Responsibility:** It is strongly recommend you **review the contents** of `/data/data/com.termux/files/home/update_pifork.sh` before running it to ensure you trust the source it connects to.
+* **Remote Execution:** This script fetches the latest build artifacts (including executable scripts) directly from GitHub and runs them as Root.
+* **Source of Truth:** The source repository is defined in the configuration section of the script:
+    ```bash
+    REPO="osm0sis/PlayIntegrityFork"
+    ```
+* **User Responsibility:** You are effectively granting root access to code produced by the repository owner defined in that variable. 
+    * It is strongly recommended that you review the contents of `/data/data/com.termux/files/home/update_pifork.sh` before running it.
+    * Verify that the `REPO` variable matches a trusted developer (default: `osm0sis`).
 
 ---
 

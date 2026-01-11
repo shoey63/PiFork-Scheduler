@@ -5,22 +5,47 @@
 # * = all, 0 = Sunday, 1-6 = Mon-Sat
 # ---------------------------------------------------------
 
-# --- OPTION 1: STANDARD (Active) ---
-# Runs the full update (Download + Install + Match) every day at 4:00 AM.
+# =========================================================
+# OPTION 1: STANDARD (DEFAULT / SET & FORGET)
+# =========================================================
+# Full update every day:
+#  - Download latest CI build
+#  - Install module
+#  - Match fingerprint
+#
 0 4 * * * /system/bin/sh /data/adb/modules/pifork-scheduler/wrapper.sh
 
-# --- OPTION 2: HYBRID (Weekly Download / Daily Refresh) ---
-# To use this, add a # to Option 1 above, and remove the # from
-# the 2 lines below beginning with #0 4
 
-# A. SUNDAY ONLY (0): Full Update via Wrapper
+# =========================================================
+# OPTION 2: DAILY FINGERPRINT REFRESH ONLY
+# =========================================================
+# Local autopif (-m) only. No downloads.
+#
+# To use:
+#   1. Comment OPTION 1
+#   2. Uncomment the #0 4... line below
+#
+#0 4 * * * export PATH=/system/bin:$PATH; cd /data/adb/modules/playintegrityfix || exit; f=$(ls -t autopif*.sh 2>/dev/null | head -n 1); [ -n "$f" ] && /system/bin/sh "$f" -m 2>&1 | grep -v "bad date"
+
+
+# =========================================================
+# OPTION 3: HYBRID (POWER USERS)
+# =========================================================
+# Weekly full update + daily local refresh.
+#
+# To use:
+#   1. Comment OPTION 1
+#   2. Uncomment BOTH #0 4... lines below
+#
+# A. SUNDAY: Full Update
 #0 4 * * 0 /system/bin/sh /data/adb/modules/pifork-scheduler/wrapper.sh
+#
+# B. MON–SAT: Local Refresh (Silenced)
+#0 4 * * 1-6 export PATH=/system/bin:$PATH; cd /data/adb/modules/playintegrityfix || exit; f=$(ls -t autopif*.sh 2>/dev/null | head -n 1); [ -n "$f" ] && /system/bin/sh "$f" -m 2>&1 | grep -v "bad date"
 
-# B. MON-SAT (1-6): Local Refresh (Runs any installed autopif*.sh with -m)
-#0 4 * * 1-6 cd /data/adb/modules/playintegrityfix || exit; f=$(ls -t autopif*.sh 2>/dev/null | head -n 1); [ -n "$f" ] && /system/bin/sh "$f" -m
 
 # ---------------------------------------------------------
-# USEFUL COMMANDS (Run these in Terminal)
+# USEFUL COMMANDS (Run Manually)
 # ---------------------------------------------------------
-# Force Update Now:
+# Force full update immediately:
 # su -c sh /data/adb/modules/pifork-scheduler/wrapper.sh
